@@ -1,0 +1,60 @@
+youtube:
+  api_key: "${YOUTUBE_API_KEY}"
+
+# Каналы конкурентов для мониторинга
+# Добавь ID каналов в формате UC...
+channels:
+  - id: "UC_EXAMPLE_CHANNEL_1"
+    name: "DeFi Channel Example 1"
+  - id: "UC_EXAMPLE_CHANNEL_2"
+    name: "DeFi Channel Example 2"
+
+monitoring:
+  # Адаптивные пороги вирусности в зависимости от размера канала
+  virality_thresholds:
+    small:      # до 5,000 подписчиков
+      max_subs: 5000
+      ratio: 1.5    # views >= subs * 1.5
+    medium:     # 5,000 - 50,000 подписчиков
+      max_subs: 50000
+      ratio: 1.0    # views >= subs * 1.0
+    large:      # более 50,000 подписчиков
+      max_subs: null
+      ratio: 0.3    # views >= subs * 0.3 (30%)
+
+  check_interval: "0 8 * * *"  # каждый день в 8:00 UTC
+  max_video_age_days: 7        # анализировать видео не старше 7 дней
+
+llm:
+  provider: "anthropic"  # "anthropic" или "openai"
+  api_key: "${ANTHROPIC_API_KEY}"
+  model: "claude-sonnet-4-20250514"
+  # Альтернатива для OpenAI:
+  # provider: "openai"
+  # api_key: "${OPENAI_API_KEY}"
+  # model: "gpt-4-turbo-preview"
+
+telegram:
+  bot_token: "${TELEGRAM_BOT_TOKEN}"
+  chat_id: "${TELEGRAM_CHAT_ID}"
+
+factcheck:
+  # Источники для проверки фактов
+  sources:
+    - name: "defillama"
+      enabled: true
+      base_url: "https://api.llama.fi"
+    - name: "coingecko"
+      enabled: true
+      base_url: "https://api.coingecko.com/api/v3"
+  # Использовать web search для дополнительной проверки
+  web_search_enabled: true
+
+style:
+  author_name: "Твоё имя"
+  tone: "разговорный, но экспертный"
+  language: "ru"
+  examples_file: "prompts/style_examples.md"
+
+database:
+  path: "data/monitor.db"
